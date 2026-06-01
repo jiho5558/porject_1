@@ -1,19 +1,23 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+// import { UserContext } from '../../no0_context/UserContext';
+import { useDispatch, useSelector } from 'react-redux';
+import { login } from '../../no3_store/slices/userSlice';
 
 const initialState = {
   username: "",
   password: ""
 }
-
-const LoginForm = ({ users, setLoginMode }) => {
+const LoginForm = () => {
+  const {users} = useSelector(state=>state.user)
+  const dispatch = useDispatch();
+ 
   const [user, setUser] = useState(initialState);
   const navigate = useNavigate();
 
   const handleChange = (event) => {
     const { name, value } = event.target;
-
     setUser(prev => ({
       ...prev,
       [name]: value
@@ -30,13 +34,7 @@ const LoginForm = ({ users, setLoginMode }) => {
 
     if (loginUser) {
       alert("로그인 성공")
-
-      setLoginMode(prev => ({
-        ...prev,
-        isLogin: true,
-        username: loginUser.username
-      }))
-
+      dispatch(login(loginUser.username))
       navigate("/")
     } else {
       alert("아이디 또는 비밀번호가 올바르지 않습니다.")

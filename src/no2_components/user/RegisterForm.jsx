@@ -1,6 +1,9 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { UserContext } from '../../no0_context/UserContext';
+import { useDispatch } from 'react-redux';
+import { register } from '../../no3_store/slices/userSlice';
 
 const initialState = {
   id: "",
@@ -9,14 +12,14 @@ const initialState = {
   confirmPassword: ""
 }
 
-const RegisterForm = ({ setUsers }) => {
+const RegisterForm = () => {
+  const dispatch = useDispatch();
 
   const [user, setUser] = useState(initialState);
   const navigate = useNavigate();
 
   const handleChange = (event) => {
     const { name, value } = event.target;
-
     setUser(prev => ({
       ...prev,
       [name]: value
@@ -25,25 +28,12 @@ const RegisterForm = ({ setUsers }) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-
     if (user.password !== user.confirmPassword) {
       alert("비밀번호가 일치하지 않습니다.");
       return;
     }
-
-    setUsers(prev => (
-      [
-        ...prev,
-        {
-          id: Date.now(),
-          username: user.username,
-          password: user.password
-        }
-      ]
-    ))
-
+    dispatch(register({id: Date.now(), user}))
     alert("회원가입 성공")
-
     navigate("/login")
   }
 
