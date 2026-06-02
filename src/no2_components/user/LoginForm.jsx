@@ -25,27 +25,30 @@ const LoginForm = () => {
   };
 
 
+
 const handleSubmit = async (event) => {
   event.preventDefault();
 
-  try {
-    const result = await dispatch(
-      userLoginThunk({
-        name: user.username,
-        password: user.password,
-      })
-    );
+  console.log("입력값 :", user);
 
-    if (result.payload) {
-      alert("로그인 성공");
-      navigate("/");
-    } else {
-      alert("아이디 또는 비밀번호가 틀렸습니다.");
-    }
-  } catch (error) {
+  const result = await dispatch(
+    userLoginThunk({
+      name: user.username,
+      password: user.password,
+    })
+  );
+
+  console.log("Thunk 결과 :", result);
+
+  if (result.payload) {
+    alert("로그인 성공");
+    navigate("/");
+  } else {
     alert("아이디 또는 비밀번호가 틀렸습니다.");
   }
 };
+
+
 
 
   return (

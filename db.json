@@ -1,19 +1,20 @@
+
 {
-  "posts": [
+  "user": [
     {
-      "id": 1,
-      "title": "json-server",
-      "author": "typicode"
-    }
-  ],
-  "comments": [
+      "id": "1",
+      "name": "john",
+      "password": "1111",
+      "email": "john@example.com",
+      "city": "Seoul"
+    },
     {
-      "id": 1,
-      "body": "some comment",
-      "postId": 1
+      "id": "2",
+      "name": "alice",
+      "password": "2222",
+      "email": "alice@example.com",
+      "city": "Busan"
     }
-  ],
-  "profile": {
-    "name": "typicode"
-  }
+  ]
 }
+

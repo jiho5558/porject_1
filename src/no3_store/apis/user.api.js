@@ -17,21 +17,30 @@ export const userAllGetApi = async () => {
 
 export const userLoginApi = async (userObj) => {
   try {
+    console.log("API로 넘어온 값 :", userObj);
+
     const response = await axios.get(
       `http://localhost:3001/user?name=${userObj.name}&password=${userObj.password}`
     );
 
     const users = response.data;
 
+    console.log("조회 결과 :", users);
+
     if (users.length === 0) {
+      console.log("로그인 실패");
       return null;
     }
 
+    console.log("로그인 성공 :", users[0]);
+
     return users[0];
   } catch (error) {
+    console.error("로그인 API 오류 :", error);
     throw error;
   }
 };
+
 
 
 
