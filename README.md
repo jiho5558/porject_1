@@ -6,6 +6,8 @@ CSS(스타일): npm install styled-components
 아이콘: npm install react-icons
 npm install -g  json-server
 
+api 라이브러리 : npm install axios
+query 라이브러리: npm install @tanstack/react-query
 
 reducer
 dispatch: 함수를 실행하는 함수

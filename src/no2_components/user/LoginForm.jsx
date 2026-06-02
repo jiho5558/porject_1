@@ -29,7 +29,7 @@ const LoginForm = () => {
 const handleSubmit = async (event) => {
   event.preventDefault();
 
-  console.log("입력값 :", user);
+  console.log("입력값", user);
 
   const result = await dispatch(
     userLoginThunk({
@@ -38,7 +38,7 @@ const handleSubmit = async (event) => {
     })
   );
 
-  console.log("Thunk 결과 :", result);
+  console.log("Thunk 결과", result);
 
   if (result.payload) {
     alert("로그인 성공");
@@ -47,6 +47,7 @@ const handleSubmit = async (event) => {
     alert("아이디 또는 비밀번호가 틀렸습니다.");
   }
 };
+ 
 
 
 

@@ -6,7 +6,11 @@ export const userLoginThunk = createAsyncThunk(
   async (userObj, thunkApi) => {
     try {
       const user = await userLoginApi(userObj);
-      localStorage.setItem("user", JSON.stringify(user));
+
+      if (user) {
+        localStorage.setItem("user", JSON.stringify(user));
+      }
+
       return user;
     } catch (error) {
       return thunkApi.rejectWithValue(error.message);
@@ -24,11 +28,11 @@ export const userRegisterThunk = createAsyncThunk(
       return thunkApi.rejectWithValue(error.message);
     }
   }
-)
+);
 
 export const getUser = () => {
-  return localStorage.getItem("user") 
-}
+  return JSON.parse(localStorage.getItem("user"));
+};
 
 const initialState = {
   users: [],
@@ -52,24 +56,25 @@ const userSlice = createSlice({
 
   extraReducers: (builder) => {
     builder
+
       .addCase(userLoginThunk.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
 
+      .addCase(userLoginThunk.fulfilled, (state, action) => {
+        state.loading = false;
 
-.addCase(userLoginThunk.fulfilled, (state, action) => {
-  state.loading = false;
+        console.log("fulfilled", action.payload);
 
-  if (action.payload) {
-    state.user = action.payload;
-    state.isLogin = true;
-  } else {
-    state.user = null;
-    state.isLogin = false;
-  }
-})
-
+        if (action.payload) {
+          state.user = action.payload;
+          state.isLogin = true;
+        } else {
+          state.user = null;
+          state.isLogin = false;
+        }
+      })
 
       .addCase(userLoginThunk.rejected, (state, action) => {
         state.loading = false;
@@ -82,13 +87,8 @@ const userSlice = createSlice({
       })
 
       .addCase(userRegisterThunk.fulfilled, (state, action) => {
-       const user = geUser();
-       if(user.username === action.payload.username
-        && user.password === action.payload.password
-      ){
-state.isLogin = true
-state.user = action.payload
-      } 
+        state.loading = false;
+        state.users.push(action.payload);
       })
 
       .addCase(userRegisterThunk.rejected, (state, action) => {

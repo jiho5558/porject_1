@@ -4,21 +4,20 @@ import React, { useContext } from 'react'
 import styled from 'styled-components'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-// import { UserContext } from '../../no0_context/UserContext'
-import {userLogoutSlice} from '../../no3_store/slices/userSlice'
-
+import { logout } from '../../no3_store/slices/userSlice';
 const HeaderBar = () => {
   const {isLogin, username} = useSelector(state=>state.user)
   const dispatch = useDispatch();
   // const {isLogin} = state;
   const navigate = useNavigate();
 
-  const handleLogout = () => {
-      dispatch(userLogoutSlice())
-      alert("로그아웃 되었습니다.")
-      navigate("/login")
-  }
+const handleLogout = () => {
+  dispatch(logout());
 
+  alert("로그아웃 되었습니다.");
+
+  navigate("/login");
+};
   return (
     <Container>
 
