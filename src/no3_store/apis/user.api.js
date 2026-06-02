@@ -14,31 +14,26 @@ export const userAllGetApi = async () => {
   }
 };
 
-export const userLoginApi = async (user) => {
+
+export const userLoginApi = async (userObj) => {
   try {
-  // console.log("user",user);
     const response = await axios.get(
-      `http://localhost:3001/user?name=${user.username}&password=${user.password.toString()}`
-    )
-    
-//console.log("users", response.data);
+      `http://localhost:3001/user?name=${userObj.name}&password=${userObj.password}`
+    );
+
     const users = response.data;
 
-    if (users) {
-      throw new Error("존재하지 않는 사용자입니다.");
+    if (users.length === 0) {
+      return null;
     }
-     if (!users[0].password === user.password.toString()) {
-      throw new Error("존재하지 않는 비밀번호 입니다.");
-    }
-
-
-   // console.log("login", users[0]);
 
     return users[0];
   } catch (error) {
     throw error;
   }
 };
+
+
 
 export const userRegisterApi = async (userObj) => {
   try {

@@ -57,12 +57,19 @@ const userSlice = createSlice({
         state.error = null;
       })
 
-      .addCase(userLoginThunk.fulfilled, (state, action) => {
-        const user = getUser();
-        console.log("user", user);
-        console.log("confirmuser", action.payload);
-        state.loading = false;
-      })
+
+.addCase(userLoginThunk.fulfilled, (state, action) => {
+  state.loading = false;
+
+  if (action.payload) {
+    state.user = action.payload;
+    state.isLogin = true;
+  } else {
+    state.user = null;
+    state.isLogin = false;
+  }
+})
+
 
       .addCase(userLoginThunk.rejected, (state, action) => {
         state.loading = false;
@@ -75,8 +82,13 @@ const userSlice = createSlice({
       })
 
       .addCase(userRegisterThunk.fulfilled, (state, action) => {
-        state.loading = false;
-        state.users.push(action.payload);
+       const user = geUser();
+       if(user.username === action.payload.username
+        && user.password === action.payload.password
+      ){
+state.isLogin = true
+state.user = action.payload
+      } 
       })
 
       .addCase(userRegisterThunk.rejected, (state, action) => {
