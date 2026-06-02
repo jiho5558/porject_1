@@ -9,7 +9,7 @@ const EmployeeList = () => {
   const {empTable, selectedId} =useSelector(state=>state.emp);
   const dispatch = useDispatch();
   useEffect(()=>{
-    dispatch(employeeAllGetSlice())
+    dispatch(employeeAllGetSlice());
   },[dispatch])
 
   return (

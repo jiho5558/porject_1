@@ -1,47 +1,64 @@
-import React, { useContext, useState } from 'react'
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { UserContext } from '../../no0_context/UserContext';
 import { useDispatch } from 'react-redux';
-import { register } from '../../no3_store/slices/userSlice';
+import { userRegisterThunk } from '../../no3_store/slices/userSlice';
 
 const initialState = {
   id: "",
   username: "",
   password: "",
-  confirmPassword: ""
-}
+  confirmPassword: "",
+  age: "",
+  email: "",
+  city: "",
+};
 
 const RegisterForm = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [user, setUser] = useState(initialState);
-  const navigate = useNavigate();
 
   const handleChange = (event) => {
     const { name, value } = event.target;
-    setUser(prev => ({
-      ...prev,
-      [name]: value
-    }))
-  }
 
-  const handleSubmit = (event) => {
+    setUser((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
+
     if (user.password !== user.confirmPassword) {
       alert("비밀번호가 일치하지 않습니다.");
       return;
     }
-    dispatch(register({id: Date.now(), user}))
-    alert("회원가입 성공")
-    navigate("/login")
-  }
+
+    try {
+      await dispatch(
+        userRegisterThunk({
+          id: Date.now().toString(),
+          name: user.username,
+          password: user.password,
+          age: Number(user.age),
+          email: user.email,
+          city: user.city,
+        })
+      );
+
+      alert("회원가입 성공");
+      navigate("/login");
+    } catch (error) {
+      alert("회원가입 실패");
+    }
+  };
 
   return (
     <Container>
-
       <Form onSubmit={handleSubmit}>
-
         <Logo>MySystem</Logo>
 
         <Title>회원가입</Title>
@@ -52,7 +69,6 @@ const RegisterForm = () => {
 
         <InputGroup>
           <Label>아이디</Label>
-
           <Input
             type="text"
             name="username"
@@ -64,7 +80,6 @@ const RegisterForm = () => {
 
         <InputGroup>
           <Label>비밀번호</Label>
-
           <Input
             type="password"
             name="password"
@@ -76,7 +91,6 @@ const RegisterForm = () => {
 
         <InputGroup>
           <Label>비밀번호 확인</Label>
-
           <Input
             type="password"
             name="confirmPassword"
@@ -86,7 +100,40 @@ const RegisterForm = () => {
           />
         </InputGroup>
 
-        <RegisterButton>
+        <InputGroup>
+          <Label>이메일</Label>
+          <Input
+            type="email"
+            name="email"
+            value={user.email}
+            onChange={handleChange}
+            placeholder="이메일 입력"
+          />
+        </InputGroup>
+
+        <InputGroup>
+          <Label>나이</Label>
+          <Input
+            type="number"
+            name="age"
+            value={user.age}
+            onChange={handleChange}
+            placeholder="나이 입력"
+          />
+        </InputGroup>
+
+        <InputGroup>
+          <Label>도시</Label>
+          <Input
+            type="text"
+            name="city"
+            value={user.city}
+            onChange={handleChange}
+            placeholder="도시 입력"
+          />
+        </InputGroup>
+
+        <RegisterButton type="submit">
           회원가입
         </RegisterButton>
 
@@ -98,15 +145,12 @@ const RegisterForm = () => {
         >
           이미 회원이신가요? 로그인
         </LoginButton>
-
       </Form>
-
     </Container>
-  )
-}
+  );
+};
 
 export default RegisterForm;
-
 
 const Container = styled.div`
   width: 100%;
@@ -124,7 +168,7 @@ const Container = styled.div`
     #f8fafc,
     #dbeafe
   );
-`
+`;
 
 const Form = styled.form`
   width: 100%;
@@ -142,118 +186,82 @@ const Form = styled.form`
 
   display: flex;
   flex-direction: column;
-`
+`;
 
 const Logo = styled.div`
   text-align: center;
-
   font-size: 30px;
   font-weight: 800;
-
   color: #2563eb;
-
   margin-bottom: 12px;
-`
+`;
 
 const Title = styled.h2`
   text-align: center;
-
   font-size: 28px;
-
   color: #0f172a;
-
   margin-bottom: 10px;
-`
+`;
 
 const Description = styled.p`
   text-align: center;
-
   color: #64748b;
   font-size: 15px;
-
   margin-bottom: 32px;
-`
+`;
 
 const InputGroup = styled.div`
   display: flex;
   flex-direction: column;
-
   margin-bottom: 20px;
-`
+`;
 
 const Label = styled.label`
   font-size: 14px;
   font-weight: 600;
-
   color: #334155;
-
   margin-bottom: 8px;
-`
+`;
 
 const Input = styled.input`
   width: 100%;
-
   padding: 14px 16px;
-
   border: 1px solid #cbd5e1;
   border-radius: 12px;
-
   font-size: 15px;
-
   outline: none;
 
-  transition: 0.2s;
-
-  &:focus{
+  &:focus {
     border-color: #3b82f6;
-
-    box-shadow:
-      0 0 0 4px rgba(59,130,246,0.15);
+    box-shadow: 0 0 0 4px rgba(59,130,246,0.15);
   }
-`
+`;
 
 const BaseButton = styled.button`
   width: 100%;
-
   border: none;
   border-radius: 12px;
-
   padding: 14px;
-
   font-size: 15px;
   font-weight: 700;
-
   cursor: pointer;
-
-  transition: 0.2s;
-`
+`;
 
 const RegisterButton = styled(BaseButton)`
   background: #2563eb;
   color: white;
-
   margin-top: 8px;
-
-  &:hover{
-    background: #1d4ed8;
-    transform: translateY(-1px);
-  }
-`
+`;
 
 const Divider = styled.div`
   width: 100%;
   height: 1px;
-
   background: #e2e8f0;
-
   margin: 24px 0;
-`
+`;
 
 const LoginButton = styled(BaseButton)`
   background: #eff6ff;
   color: #2563eb;
+`;
 
-  &:hover{
-    background: #dbeafe;
-  }
-`
