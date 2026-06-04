@@ -1,39 +1,26 @@
 // EmployeeList.jsx
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import { useDispatch, useSelector } from 'react-redux';
-import {
-  employeeAllGetSlice,
-  select,
-} from '../../no3_store/slices/employeeSlice';
+import { useAllGetEmployee } from '../../no3_store/hooks/useEmployee';
 
-import {
-  useAllGetEmployee,
-  useDeleteEmployee,
-} from '../../no3_store/hooks/useEmployee';
+const EmployeeList = ({ selectedId, setSelectedId }) => {
+  const {
+    data: employees = [],
+    isLoading,
+    error,
+  } = useAllGetEmployee();
 
-const EmployeeList = () => {
-  const { data: employees = [], isLoading, error } =
-    useAllGetEmployee();
-
-  const { empTable, selectedId } = useSelector(
-    (state) => state.emp
-  );
-
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(employeeAllGetSlice());
-  }, [dispatch]);
+  if (isLoading) return <h3>loading...</h3>;
+  if (error) return <h3>{error.message}</h3>;
 
   return (
     <Container>
-      {empTable?.map((item) => (
+      {employees.map((item) => (
         <EmployeeButton
           key={item.id}
           $active={selectedId === item.id}
-          onClick={() => dispatch(select(item.id))}
+          onClick={() => setSelectedId(item.id)}
         >
           {item.name}
         </EmployeeButton>
@@ -41,7 +28,6 @@ const EmployeeList = () => {
     </Container>
   );
 };
-
 export default EmployeeList;
 
 const Container = styled.div`

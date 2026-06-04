@@ -1,19 +1,22 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
-import { useDispatch } from 'react-redux';
-import { userLoginThunk } from '../../no3_store/slices/userSlice';
+
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import styled from "styled-components";
+
+import { userLoginThunk } from "../../no3_store/slices/userSlice";
 
 const initialState = {
   username: "",
   password: "",
 };
-
 const LoginForm = () => {
+  const [user, setUser] = useState(initialState);
+
   const dispatch = useDispatch();
+
   const navigate = useNavigate();
 
-  const [user, setUser] = useState(initialState);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -24,33 +27,42 @@ const LoginForm = () => {
     }));
   };
 
+  const handleSubmit = async (event) => {
+    event.preventDefault();
 
+    if (user.username.trim() === "") {
+      alert("아이디를 입력하세요.");
+      return;
+    }
 
-const handleSubmit = async (event) => {
-  event.preventDefault();
+    if (user.password.trim() === "") {
+      alert("비밀번호를 입력하세요.");
+      return;
+    }
 
-  console.log("입력값", user);
+    try {
+      const result = await dispatch(
+        userLoginThunk({
+          username: user.username,
+          password: user.password,
+        })
+      );
 
-  const result = await dispatch(
-    userLoginThunk({
-      name: user.username,
-      password: user.password,
-    })
-  );
+      console.log("Thunk 결과 :", result);
 
-  console.log("Thunk 결과", result);
+      if (userLoginThunk.fulfilled.match(result)) {
+        alert("로그인 성공");
 
-  if (result.payload) {
-    alert("로그인 성공");
-    navigate("/");
-  } else {
-    alert("아이디 또는 비밀번호가 틀렸습니다.");
-  }
-};
- 
+        navigate("/");
+      } else {
+        alert("아이디 또는 비밀번호가 틀렸습니다.");
+      }
+    } catch (error) {
+      console.error(error);
 
-
-
+      alert("로그인 중 오류가 발생했습니다.");
+    }
+  };
 
   return (
     <Container>
@@ -104,7 +116,9 @@ const handleSubmit = async (event) => {
   );
 };
 
+
 export default LoginForm;
+
 
 const Container = styled.div`
   width: 100%;
@@ -114,84 +128,54 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
 
-  background: linear-gradient(
-    135deg,
-    #e0f2fe,
-    #f8fafc,
-    #dbeafe
-  );
-
-  padding: 20px;
+  background: #f8fafc;
 `;
 
 const Form = styled.form`
-  width: 100%;
-  max-width: 420px;
+  width: 400px;
 
   background: white;
 
-  padding: 48px 40px;
+  padding: 40px;
 
-  border-radius: 24px;
-
-  box-shadow:
-    0 10px 30px rgba(0,0,0,0.08),
-    0 4px 10px rgba(0,0,0,0.04);
+  border-radius: 16px;
 
   display: flex;
   flex-direction: column;
+
+  gap: 16px;
+
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 `;
 
-const Logo = styled.div`
-  font-size: 30px;
-  font-weight: 800;
-  color: #2563eb;
+const Logo = styled.h1`
   text-align: center;
-  margin-bottom: 12px;
 `;
 
 const Title = styled.h2`
   text-align: center;
-  font-size: 28px;
-  color: #0f172a;
-  margin-bottom: 10px;
 `;
 
 const Description = styled.p`
   text-align: center;
-  color: #64748b;
-  font-size: 15px;
-  margin-bottom: 32px;
 `;
 
 const InputGroup = styled.div`
   display: flex;
   flex-direction: column;
-  margin-bottom: 20px;
 `;
 
 const Label = styled.label`
-  font-size: 14px;
-  font-weight: 600;
-  color: #334155;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 `;
 
 const Input = styled.input`
-  width: 100%;
-  padding: 14px 16px;
-  border: 1px solid #cbd5e1;
-  border-radius: 12px;
-  font-size: 15px;
+  padding: 10px;
 `;
 
 const BaseButton = styled.button`
-  width: 100%;
+  padding: 12px;
   border: none;
-  border-radius: 12px;
-  padding: 14px;
-  font-size: 15px;
-  font-weight: 700;
   cursor: pointer;
 `;
 
@@ -200,15 +184,12 @@ const LoginButton = styled(BaseButton)`
   color: white;
 `;
 
-const Divider = styled.div`
-  width: 100%;
-  height: 1px;
+const RegisterButton = styled(BaseButton)`
   background: #e2e8f0;
-  margin: 24px 0;
 `;
 
-const RegisterButton = styled(BaseButton)`
-  background: #eff6ff;
-  color: #2563eb;
+const Divider = styled.hr`
+  width: 100%;
 `;
+
 

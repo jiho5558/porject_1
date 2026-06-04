@@ -11,14 +11,16 @@ import RegisterPage from './no1_pages/user/RegisterPage'
 import EmployeeProvider from './no0_context/EmployeeContext'
 import UserProvider from './no0_context/UserContext'
 import TodoProvider from './no0_context/TodoContext'
-import { Provider } from 'react-redux'
+//import { Provider } from 'react-redux'
 import store from './no3_store'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
+const queryClient = new QueryClient();
 function App() {
   return (
     <BrowserRouter>
-      <Provider store={store}>
-          <Container>
+        <QueryClientProvider client={queryClient}>
+  <Container>
             <HeaderBar/>
             <BodyLayout>
               <SiderBar/>
@@ -41,7 +43,8 @@ function App() {
               </PageContainer>
             </BodyLayout>
           </Container>
-      </Provider>
+        </QueryClientProvider>
+
     </BrowserRouter>
   )
 }

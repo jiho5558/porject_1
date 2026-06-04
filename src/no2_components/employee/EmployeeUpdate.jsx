@@ -1,110 +1,138 @@
-// EmployeeUpdate.jsx
-
-import React, { useEffect, useState, useContext } from 'react'
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import { employeeAllPutSlice } from '../../no3_store/slices/employeeSlice';
-// import { EmployeeContext } from '../../no0_context/EmployeeContext';
-// import { employeePutSlice } from '../../no3_store/slices/employeeSlice';
 
-const EmployeeUpdate = () => {
-    const {emp} = useSelector(state=>state.emp);
-    const dispatch = useDispatch();
-    const [employeePutSlice, setNewEmp] = useState(emp);
-    useEffect(() => {
-        emp &&
-        setNewEmp(emp)
-    }, [emp])
-    const handleChange = (event) => {
-        const {name, value} = event.target;
-        setNewEmp(prev => (
-            {...prev, [name]: value}
-        ))
+import {
+  useGetEmployee,
+  usePutupdateEmployee
+} from '../../no3_store/hooks/useEmployee';
+
+
+
+const EmployeeUpdate = ({ selectedId }) => {
+  const [newEmp, setNewEmp] = useState({});
+
+  const dispatch = useDispatch();
+
+ const {
+  data: emp,
+  isLoading,
+  error,
+} = useGetEmployee(selectedId);
+
+  const updateMutation = usePutupdateEmployee();
+
+  useEffect(() => {
+    if (emp) {
+      setNewEmp(emp);
     }
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        dispatch(employeePutSlice(newEmp))
+  }, [emp]);
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+
+    setNewEmp((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+const handleSubmit = async (event) => {
+  event.preventDefault();
+
+  console.log("newEmp =", newEmp);
+
+  try {
+    await updateMutation.mutateAsync(newEmp);
+  
+      dispatch(employeeAllPutSlice(newEmp));
+
+      alert('직원정보가 수정되었습니다.');
+    } catch (error) {
+      console.error(error);
+      alert('직원정보 수정에 실패했습니다.');
     }
-    return (
-        <Form onSubmit={handleSubmit}>
-            <InputGroup>
-                <Label>이름</Label>
-                <Input
-                    type="text"
-                    name="name"
-                    value={newEmp.name}
-                    onChange={handleChange}
-                    placeholder='이름'
-                />
-            </InputGroup>
-            <InputGroup>
-                <Label>이메일</Label>
+  };
 
-                <Input
-                    type="email"
-                    name="email"
-                    value={newEmp.email}
-                    onChange={handleChange}
-                    placeholder='이메일'
-                />
+  if (isLoading) return <div>로딩중...</div>;
+  if (error) return <div>에러가 발생했습니다.</div>;
 
-            </InputGroup>
+  return (
+    <Form onSubmit={handleSubmit}>
+      <InputGroup>
+        <Label>이름</Label>
+        <Input
+          type="text"
+          name="name"
+          value={newEmp?.name || ''}
+          onChange={handleChange}
+          placeholder="이름"
+          required
+        />
+      </InputGroup>
 
-            <InputGroup>
+      <InputGroup>
+        <Label>이메일</Label>
+        <Input
+          type="email"
+          name="email"
+          value={newEmp?.email || ''}
+          onChange={handleChange}
+          placeholder="이메일"
+          required
+        />
+      </InputGroup>
 
-                <Label>직업</Label>
+      <InputGroup>
+        <Label>직업</Label>
+        <Input
+          type="text"
+          name="job"
+          value={newEmp?.job || ''}
+          onChange={handleChange}
+          placeholder="직업"
+          required
+        />
+      </InputGroup>
 
-                <Input
-                    type="text"
-                    name="job"
-                    value={newEmp.job}
-                    onChange={handleChange}
-                    placeholder='직업'
-                />
+      <InputGroup>
+        <Label>급여</Label>
+        <Input
+          type="number"
+          name="pay"
+          value={newEmp?.pay || ''}
+          onChange={handleChange}
+          placeholder="급여"
+          required
+        />
+      </InputGroup>
 
-            </InputGroup>
+      <SubmitButton type="submit">
+        수정
+      </SubmitButton>
+    </Form>
+  );
+};
 
-            <InputGroup>
-
-                <Label>급여</Label>
-
-                <Input
-                    type="number"
-                    name="pay"
-                    value={newEmp.pay}
-                    onChange={handleChange}
-                    placeholder='급여'
-                />
-
-            </InputGroup>
-
-            <SubmitButton>
-                수정
-            </SubmitButton>
-
-        </Form>
-    )
-}
-
-export default EmployeeUpdate
-
+export default EmployeeUpdate;
 
 const Form = styled.form`
   display: flex;
   flex-direction: column;
   gap: 20px;
-`
+`;
 
 const InputGroup = styled.div`
   display: flex;
   flex-direction: column;
   gap: 8px;
-`
+`;
 
 const Label = styled.label`
   font-weight: bold;
   color: #334155;
-`
+`;
 
 const Input = styled.input`
   width: 100%;
@@ -114,10 +142,10 @@ const Input = styled.input`
   outline: none;
   font-size: 15px;
 
-  &:focus{
+  &:focus {
     border-color: #3b82f6;
   }
-`
+`;
 
 const SubmitButton = styled.button`
   border: none;
@@ -130,7 +158,7 @@ const SubmitButton = styled.button`
   cursor: pointer;
   transition: 0.2s;
 
-  &:hover{
+  &:hover {
     opacity: 0.85;
   }
-`
+`;

@@ -1,9 +1,14 @@
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import {
+  useQuery,
+  useMutation,
+  useQueryClient,
+} from "@tanstack/react-query";
 
 import {
   employeeAllGetApi,
-  employeePostApi,
-  employeePutApi,
+  employeeGetApi,
+  employeeAllPostApi,
+  employeeAllPutApi,
   employeeDeleteApi,
 } from "../apis/employee.api";
 
@@ -14,20 +19,29 @@ export const useAllGetEmployee = () => {
   });
 };
 
+export const useGetEmployee = (id) => {
+  return useQuery({
+    queryKey: ["employee", id],
+    queryFn: () => employeeGetApi(id),
+    enabled: !!id,
+  });
+};
+
 export const usePostRegisterEmployee = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: employeePostApi,
+    mutationFn: employeeAllPostApi,
 
     onSuccess: (dataObj) => {
       queryClient.setQueryData(
         ["employees"],
-        (oldData = []) => [
-          ...oldData,
-          dataObj,
-        ]
+        (oldData = []) => [...oldData, dataObj]
       );
+
+      queryClient.invalidateQueries({
+        queryKey: ["employees"],
+      });
     },
   });
 };
@@ -36,16 +50,14 @@ export const usePutupdateEmployee = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: employeePutApi,
+    mutationFn: employeeAllPutApi,
 
     onSuccess: (dataObj) => {
       queryClient.setQueryData(
         ["employees"],
         (oldData = []) =>
           oldData.map((item) =>
-            item.id === dataObj.id
-              ? dataObj
-              : item
+            item.id === dataObj.id ? dataObj : item
           )
       );
 
@@ -67,9 +79,7 @@ export const useDeleteEmployee = () => {
       queryClient.setQueryData(
         ["employees"],
         (oldData = []) =>
-          oldData.filter(
-            (item) => item.id !== id
-          )
+          oldData.filter((item) => item.id !== id)
       );
 
       queryClient.removeQueries({

@@ -1,4 +1,6 @@
-{"user": [
+
+{
+  "users": [
     {
       "id": "1",
       "username": "Alice",
@@ -120,8 +122,8 @@
   "sales": [
     {
       "id": 1,
-      "user_id": 79,
-      "product_id": 68,
+      "user_id": 1,
+      "product_id": 5,
       "quantity": 5,
       "discount_rate": 0.1,
       "total_price": 86445,
@@ -129,8 +131,8 @@
     },
     {
       "id": 2,
-      "user_id": 58,
-      "product_id": 93,
+      "user_id": 2,
+      "product_id": 6,
       "quantity": 5,
       "discount_rate": 0.15,
       "total_price": 402173,
@@ -138,13 +140,20 @@
     },
     {
       "id": 3,
-      "user_id": 97,
-      "product_id": 21,
+      "user_id": 3,
+      "product_id": 7,
       "quantity": 4,
       "discount_rate": 0.15,
       "total_price": 167269,
       "created_at": "2026-03-08"
     }
-  ]
-}
+  ],
 
+"todos": [
+  {
+    "id": "1",
+    "subject": "공부하기",
+    "checked": false
+  }
+]
+}

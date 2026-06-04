@@ -1,39 +1,36 @@
 // EmployeeTable.jsx
 
-import React, { useContext } from 'react'
+import React from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
-// import { EmployeeContext } from '../../no0_context/EmployeeContext';
 
 const EmployeeTable = () => {
-  const {emp} = useSelector(state=>state.emp);
+  const { emp } = useSelector((state) => state.emp);
+
+  if (!emp) {
+    return <h3>직원을 선택하세요.</h3>;
+  }
+
   return (
     <Table>
-
       <tbody>
-
-        {emp &&
-          Object.entries(emp).map(([key, value]) => (
-            <tr key={key}>
-              <Th>{key}</Th>
-              <Td>{value}</Td>
-            </tr>
-          ))
-        }
-
+        {Object.entries(emp).map(([key, value]) => (
+          <tr key={key}>
+            <Th>{key}</Th>
+            <Td>{value}</Td>
+          </tr>
+        ))}
       </tbody>
-
     </Table>
-  )
-}
+  );
+};
 
-export default EmployeeTable
-
+export default EmployeeTable;
 
 const Table = styled.table`
   width: 100%;
   border-collapse: collapse;
-`
+`;
 
 const Th = styled.th`
   width: 140px;
@@ -41,9 +38,9 @@ const Th = styled.th`
   padding: 14px;
   text-align: left;
   border-bottom: 1px solid #cbd5e1;
-`
+`;
 
 const Td = styled.td`
   padding: 14px;
   border-bottom: 1px solid #e2e8f0;
-`
+`;

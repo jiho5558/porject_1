@@ -1,11 +1,10 @@
 
 import axios from "axios";
-//import { use } from "react";
 
 export const userAllGetApi = async () => {
   try {
     const response = await axios.get(
-      "http://localhost:3001/user"
+      "http://localhost:3001/users"
     );
 
     return response.data;
@@ -14,13 +13,12 @@ export const userAllGetApi = async () => {
   }
 };
 
-
 export const userLoginApi = async (userObj) => {
   try {
     console.log("API로 넘어온 값 :", userObj);
 
     const response = await axios.get(
-      `http://localhost:3001/user?name=${userObj.name}&password=${userObj.password}`
+      `http://localhost:3001/users?name=${userObj.name}&password=${userObj.password}`
     );
 
     const users = response.data;
@@ -28,36 +26,38 @@ export const userLoginApi = async (userObj) => {
     console.log("조회 결과 :", users);
 
     if (users.length === 0) {
-      console.log("로그인 실패");
-      return null;
+      throw new Error(
+        "아이디 또는 비밀번호가 일치하지 않습니다."
+      );
     }
 
-    console.log("로그인 성공 :", users[0]);
+    const foundUser = users[0];
 
-    return users[0];
+    console.log("로그인 성공 :", foundUser);
+
+    return foundUser;
   } catch (error) {
     console.error("로그인 API 오류 :", error);
-    throw error;
+    throw new Error(error.message);
   }
 };
-
-
-
 
 export const userRegisterApi = async (userObj) => {
   try {
     const response = await axios.get(
-      `http://localhost:3001/user?name=${userObj.name}`
+      `http://localhost:3001/users?name=${userObj.name}`
     );
 
     const users = response.data;
 
     if (users.length > 0) {
-      throw new Error("이미 존재하는 사용자입니다.");
+      throw new Error(
+        "이미 존재하는 사용자입니다."
+      );
     }
 
     const result = await axios.post(
-      "http://localhost:3001/user",
+      "http://localhost:3001/users",
       userObj
     );
 
@@ -70,7 +70,7 @@ export const userRegisterApi = async (userObj) => {
 export const userPutApi = async (dataObj) => {
   try {
     const response = await axios.put(
-      `http://localhost:3001/user/${dataObj.id}`,
+      `http://localhost:3001/users/${dataObj.id}`,
       dataObj
     );
 
@@ -83,13 +83,12 @@ export const userPutApi = async (dataObj) => {
 export const userDeleteApi = async (id) => {
   try {
     const response = await axios.delete(
-      `http://localhost:3001/user/${id}`
+      `http://localhost:3001/users  /${id}`
     );
 
     return response.data;
   } catch (error) {
-  
+    throw error;
   }
 };
-
 
