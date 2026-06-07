@@ -92,32 +92,168 @@
 
   "$schema": "./node_modules/json-server/lib/cli/schema.json",
 
-  "products": [
-    {
-      "id": 5,
-      "product_name": "스마트폰 거치대 5",
-      "color": "Pink",
-      "cost_price": 47723,
-      "sale_price": 76606,
-      "category_code": "E4"
-    },
-    {
-      "id": 6,
-      "product_name": "태블릿 케이스 6",
-      "color": "Red",
-      "cost_price": 29711,
-      "sale_price": 70400,
-      "category_code": "E6"
-    },
-    {
-      "id": 7,
-      "product_name": "고속충전 케이블 7",
-      "color": "Blue",
-      "cost_price": 17246,
-      "sale_price": 25732,
-      "category_code": "E2"
-    }
-  ],
+ "products": [
+  {
+    "id": 5,
+    "productName": "스마트폰 거치대 5",
+    "color": "Pink",
+    "costPrice": 47723,
+    "sellPrice": 76606,
+    "categoryCode": "E4"
+  },
+  {
+    "id": 6,
+    "productName": "태블릿 케이스 6",
+    "color": "Red",
+    "costPrice": 29711,
+    "sellPrice": 70400,
+    "categoryCode": "E6"
+  },
+  {
+    "id": 7,
+    "productName": "고속충전 케이블 7",
+    "color": "Blue",
+    "costPrice": 17246,
+    "sellPrice": 25732,
+    "categoryCode": "E2"
+  },
+  {
+    "id": 8,
+    "productName": "일체형 보조배터리 8",
+    "color": "Green",
+    "costPrice": 39555,
+    "sellPrice": 75949,
+    "categoryCode": "E1"
+  },
+  {
+    "id": 9,
+    "productName": "스마트폰 거치대 9",
+    "color": "Pink",
+    "costPrice": 1471,
+    "sellPrice": 1900,
+    "categoryCode": "E4"
+  },
+  {
+    "id": 10,
+    "productName": "일체형 보조배터리 10",
+    "color": "Black",
+    "costPrice": 16003,
+    "sellPrice": 20605,
+    "categoryCode": "E1"
+  },
+  {
+    "id": 11,
+    "productName": "태블릿 케이스 11",
+    "color": "Blue",
+    "costPrice": 5643,
+    "sellPrice": 10543,
+    "categoryCode": "E6"
+  },
+  {
+    "id": 12,
+    "productName": "차량용 충전기 12",
+    "color": "Pink",
+    "costPrice": 15040,
+    "sellPrice": 28591,
+    "categoryCode": "E8"
+  },
+  {
+    "id": 13,
+    "productName": "무드등 가습기 13",
+    "color": "Gray",
+    "costPrice": 38762,
+    "sellPrice": 70332,
+    "categoryCode": "E10"
+  },
+  {
+    "id": 14,
+    "productName": "차량용 충전기 14",
+    "color": "Black",
+    "costPrice": 27677,
+    "sellPrice": 40063,
+    "categoryCode": "E8"
+  },
+  {
+    "id": 15,
+    "productName": "노트북 파우치 15",
+    "color": "Red",
+    "costPrice": 24219,
+    "sellPrice": 42399,
+    "categoryCode": "E7"
+  },
+  {
+    "id": 16,
+    "productName": "일체형 보조배터리 16",
+    "color": "Pink",
+    "costPrice": 45129,
+    "sellPrice": 92491,
+    "categoryCode": "E1"
+  },
+  {
+    "id": 17,
+    "productName": "고속충전 케이블 17",
+    "color": "Blue",
+    "costPrice": 4972,
+    "sellPrice": 8568,
+    "categoryCode": "E2"
+  },
+  {
+    "id": 18,
+    "productName": "고속충전 케이블 18",
+    "color": "Green",
+    "costPrice": 17295,
+    "sellPrice": 25061,
+    "categoryCode": "E2"
+  },
+  {
+    "id": 19,
+    "productName": "차량용 충전기 19",
+    "color": "Blue",
+    "costPrice": 10186,
+    "sellPrice": 17809,
+    "categoryCode": "E8"
+  },
+  {
+    "id": 20,
+    "productName": "차량용 충전기 20",
+    "color": "Black",
+    "costPrice": 17371,
+    "sellPrice": 40593,
+    "categoryCode": "E8"
+  },
+  {
+    "id": 21,
+    "productName": "차량용 충전기 21",
+    "color": "Pink",
+    "costPrice": 37066,
+    "sellPrice": 49197,
+    "categoryCode": "E8"
+  },
+  {
+    "id": 22,
+    "productName": "미니 선풍기 22",
+    "color": "Gray",
+    "costPrice": 1967,
+    "sellPrice": 4838,
+    "categoryCode": "E9"
+  },
+  {
+    "id": 23,
+    "productName": "스마트폰 거치대 23",
+    "color": "Red",
+    "costPrice": 11899,
+    "sellPrice": 20565,
+    "categoryCode": "E4"
+  },
+  {
+    "id": 24,
+    "productName": "스마트폰 거치대 24",
+    "color": "White",
+    "costPrice": 27282,
+    "sellPrice": 64744,
+    "categoryCode": "E4"
+  }
+],
 
   "sales": [
     {
