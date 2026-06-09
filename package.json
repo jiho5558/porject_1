@@ -9,8 +9,8 @@
   "dependencies": {
     "@reduxjs/toolkit": "^2.12.0",
     "@tanstack/react-query": "^5.100.14",
-    "ag-grid-community": "^35.3.0",
-    "ag-grid-react": "^35.3.0",
+    "ag-grid-community": "^35.3.1",
+    "ag-grid-react": "^35.3.1",
     "antd": "^6.4.3",
     "axios": "^1.16.1",
     "chart.js": "^4.5.1",
@@ -27,7 +27,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "server": "json-server --watch server/db.json --port 3001"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^6.0.2"

@@ -5,12 +5,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import HomePage from "./no1_pages/HomePage";
 import TodoPage from "./no1_pages/TodoPage";
 import EmployeePage from "./no1_pages/EmployeePage";
-
 import ProductPage from "./no1_pages/sales/ProductPage";
-
-
-import LoginPage from "./no1_pages/user/LoginPage";
-import RegisterPage from "./no1_pages/user/RegisterPage";
+import SalesPage from "./no1_pages/sales/SalesPage";
 
 import HeaderBar from "./no2_components/layout/HeaderBar";
 import SiderBar from "./no2_components/layout/SiderBar";
@@ -27,64 +23,40 @@ function App() {
       <QueryClientProvider client={queryClient}>
         <UserProvider>
           <TodoProvider>
-
             <Container>
-
               <HeaderBar />
 
               <BodyLayout>
-
                 <SiderBar />
 
                 <PageContainer>
-
                   <Routes>
+  <Route path="/" element={<HomePage />} />
 
-                    <Route
-                      path="/login"
-                      element={<LoginPage />}
-                    />
+  <Route path="/todo" element={<TodoPage />} />
 
-                    <Route
-                      path="/register"
-                      element={<RegisterPage />}
-                    />
+  <Route
+    path="/employee"
+    element={
+      <EmployeeProvider>
+        <EmployeePage />
+      </EmployeeProvider>
+    }
+  />
 
-                    <Route
-                      path="/"
-                      element={<HomePage />}
-                    />
+  <Route
+    path="/product"
+    element={<ProductPage />}
+  />
 
-                    <Route
-                      path="/todo"
-                      element={<TodoPage />}
-                    />
-
-                    <Route
-                      path="/employee"
-                      element={
-                        <EmployeeProvider>
-                          <EmployeePage />
-                        </EmployeeProvider>
-                      }
-                    />
-
-                    <Route
-                      path="/product"
-                      element={<ProductPage />}
-                    />
-
-                 
-                      
-
-                  </Routes>
-
+  <Route
+    path="/sales"
+    element={<SalesPage />}
+  />
+</Routes>
                 </PageContainer>
-
               </BodyLayout>
-
             </Container>
-
           </TodoProvider>
         </UserProvider>
       </QueryClientProvider>

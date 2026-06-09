@@ -1,8 +1,16 @@
-
 import React, { useState } from "react";
+import {
+  Modal,
+  Input,
+  InputNumber,
+  Typography,
+} from "antd";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+
 import { useRegisterUser } from "../../no3_store/hooks/useUser";
+
+const { Title } = Typography;
 
 const initialState = {
   id: "",
@@ -14,7 +22,7 @@ const initialState = {
   city: "",
 };
 
-const RegisterForm = () => {
+const RegisterForm = ({ open, setOpen }) => {
   const navigate = useNavigate();
 
   const [user, setUser] = useState(initialState);
@@ -30,48 +38,81 @@ const RegisterForm = () => {
     }));
   };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+  const handleRegister = async () => {
+    const {
+      username,
+      password,
+      confirmPassword,
+      email,
+    } = user;
 
-    if (user.username.trim() === "") {
+    if (!username.trim()) {
       alert("아이디를 입력하세요.");
       return;
     }
 
-    if (user.password.trim() === "") {
+    if (!password.trim()) {
       alert("비밀번호를 입력하세요.");
       return;
     }
 
-    if (user.password !== user.confirmPassword) {
+    if (password !== confirmPassword) {
       alert("비밀번호가 일치하지 않습니다.");
       return;
     }
 
-    const { confirmPassword, ...userData } = user;
+    if (!email.trim()) {
+      alert("이메일을 입력하세요.");
+      return;
+    }
+
+    const { confirmPassword: _, ...userData } =
+      user;
 
     userData.id = Date.now().toString();
     userData.age = Number(userData.age);
 
     try {
-      await registerMutation.mutateAsync(userData);
+      await registerMutation.mutateAsync(
+        userData
+      );
 
       alert("회원가입 성공");
 
-      navigate("/login");
-    } catch (error) {
-      console.error(error);
+      setOpen(false);
+      setUser(initialState);
 
-      alert("회원가입 실패");
+      navigate("/");
+    } catch (error) {
+      alert(
+        error?.message || "회원가입 실패"
+      );
     }
   };
 
   return (
-    <Container>
-      <Form onSubmit={handleSubmit}>
-        <Logo>MySystem</Logo>
-
-        <Title>회원가입</Title>
+    <Modal
+      open={open}
+      onOk={handleRegister}
+      onCancel={() => {
+        setOpen(false);
+        setUser(initialState);
+      }}
+      okText="회원가입"
+      cancelText="취소"
+      confirmLoading={
+        registerMutation.isPending
+      }
+      width={500}
+      centered
+    >
+      <Wrapper>
+        <Title
+          level={3}
+          style={{ textAlign: "center" }}
+        >
+          회원가입
+        </Title>
 
         <Description>
           새로운 계정을 생성하세요.
@@ -79,9 +120,7 @@ const RegisterForm = () => {
 
         <InputGroup>
           <Label>아이디</Label>
-
           <Input
-            type="text"
             name="username"
             value={user.username}
             onChange={handleChange}
@@ -91,9 +130,7 @@ const RegisterForm = () => {
 
         <InputGroup>
           <Label>비밀번호</Label>
-
-          <Input
-            type="password"
+          <Input.Password
             name="password"
             value={user.password}
             onChange={handleChange}
@@ -103,9 +140,7 @@ const RegisterForm = () => {
 
         <InputGroup>
           <Label>비밀번호 확인</Label>
-
-          <Input
-            type="password"
+          <Input.Password
             name="confirmPassword"
             value={user.confirmPassword}
             onChange={handleChange}
@@ -115,9 +150,7 @@ const RegisterForm = () => {
 
         <InputGroup>
           <Label>이메일</Label>
-
           <Input
-            type="email"
             name="email"
             value={user.email}
             onChange={handleChange}
@@ -128,12 +161,16 @@ const RegisterForm = () => {
         <InputGroup>
           <Label>나이</Label>
 
-          <Input
-            type="number"
-            name="age"
+          <InputNumber
             value={user.age}
-            onChange={handleChange}
+            onChange={(value) =>
+              setUser((prev) => ({
+                ...prev,
+                age: value,
+              }))
+            }
             placeholder="나이 입력"
+            style={{ width: "100%" }}
           />
         </InputGroup>
 
@@ -141,30 +178,38 @@ const RegisterForm = () => {
           <Label>도시</Label>
 
           <Input
-            type="text"
             name="city"
             value={user.city}
             onChange={handleChange}
             placeholder="도시 입력"
           />
         </InputGroup>
-
-        <RegisterButton type="submit">
-          회원가입
-        </RegisterButton>
-
-        <Divider />
-
-        <LoginButton
-          type="button"
-          onClick={() => navigate("/login")}
-        >
-          이미 회원이신가요? 로그인
-        </LoginButton>
-      </Form>
-    </Container>
+      </Wrapper>
+    </Modal>
   );
 };
 
 export default RegisterForm;
 
+const Wrapper = styled.div`
+  padding: 20px 10px;
+`;
+
+const Description = styled.p`
+  text-align: center;
+  color: #64748b;
+  margin-bottom: 24px;
+`;
+
+const InputGroup = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+`;
+
+const Label = styled.label`
+  font-size: 14px;
+  font-weight: 600;
+  color: #334155;
+`;

@@ -1,5 +1,4 @@
-
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 
@@ -8,64 +7,74 @@ import {
   logout,
 } from "../../no3_store/hooks/useUser";
 
+import LoginFormModal from "../user/LoginFormModal";
+import RegisterFormModal from "../user/RegisterFormModal";
+
 const HeaderBar = () => {
   const user = getCurrentUser();
-
   const navigate = useNavigate();
+
+  const [loginOpen, setLoginOpen] = useState(false);
+  const [registerOpen, setRegisterOpen] = useState(false);
 
   const handleLogout = () => {
     logout();
 
     alert("로그아웃 되었습니다.");
 
-    navigate("/login");
+    navigate("/");
   };
 
   return (
-    <Container>
-      <Logo onClick={() => navigate("/")}>
-        MySystem
-      </Logo>
+    <>
+      <Container>
+        <Logo onClick={() => navigate("/")}>
+          MySystem
+        </Logo>
 
-      <Menu>
-        {user ? (
-          <UserSection>
-            <UserName>
-              👋 {user.username} 님
-            </UserName>
+        <Menu>
+          {user ? (
+            <UserSection>
+              <UserName>
+                👋 {user.username} 님
+              </UserName>
 
-            <LogoutButton
-              onClick={handleLogout}
-            >
-              로그아웃
-            </LogoutButton>
-          </UserSection>
-        ) : (
-          <ButtonGroup>
-            <LoginButton
-              onClick={() =>
-                navigate("/login")
-              }
-            >
-              로그인
-            </LoginButton>
+              <LogoutButton onClick={handleLogout}>
+                로그아웃
+              </LogoutButton>
+            </UserSection>
+          ) : (
+            <ButtonGroup>
+              <LoginButton
+                onClick={() => setLoginOpen(true)}
+              >
+                로그인
+              </LoginButton>
 
-            <RegisterButton
-              onClick={() =>
-                navigate("/register")
-              }
-            >
-              회원가입
-            </RegisterButton>
-          </ButtonGroup>
-        )}
-      </Menu>
-    </Container>
+              <RegisterButton
+                onClick={() => setRegisterOpen(true)}
+              >
+                회원가입
+              </RegisterButton>
+            </ButtonGroup>
+          )}
+        </Menu>
+      </Container>
+
+      <LoginFormModal
+        open={loginOpen}
+        setOpen={setLoginOpen}
+      />
+
+      <RegisterFormModal
+        open={registerOpen}
+        setOpen={setRegisterOpen}
+      />
+    </>
   );
 };
 
 export default HeaderBar;
-
 
 const Container = styled.header`
   width: 100%;
@@ -126,5 +135,3 @@ const LogoutButton = styled(BaseButton)`
   background: #ef4444;
   color: white;
 `;
-
-

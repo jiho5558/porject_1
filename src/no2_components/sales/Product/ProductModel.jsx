@@ -108,18 +108,47 @@ export default ProductModel;
 
 const Form = styled.form`
   display: flex;
-  gap: 10px;
+  gap: 12px;
   flex-wrap: wrap;
+  align-items: center;
 `;
 
 const Input = styled.input`
-  padding: 10px;
+  padding: 12px 14px;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  background: #ffffff;
+  color: #202123;
+  font-size: 14px;
+  outline: none;
+  transition: all 0.2s ease;
+
+  &:focus {
+    border-color: #c7c7d1;
+    box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.04);
+  }
+
+  &::placeholder {
+    color: #9ca3af;
+  }
 `;
 
 const Button = styled.button`
-  border: none;
-  background: #3b82f6;
-  color: white;
-  padding: 10px 18px;
-  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  background: rgba(255, 255, 255, 0.9);
+  color: #202123;
+  padding: 12px 18px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: #f7f7f8;
+    border-color: #d1d5db;
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
 `;

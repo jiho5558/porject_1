@@ -1,15 +1,21 @@
-
 import {
+  useQuery,
   useQueryClient,
   useMutation,
 } from "@tanstack/react-query";
 
 import {
+  userAllGetApi,
   userLoginApi,
   userRegisterApi,
 } from "../apis/user.api";
 
-
+export const useAllGetUser = () => {
+  return useQuery({
+    queryKey: ["user"],
+    queryFn: userAllGetApi,
+  });
+};
 
 export const useLoginUser = () => {
   const queryClient = useQueryClient();
@@ -38,19 +44,11 @@ export const useRegisterUser = () => {
 };
 
 export const logout = () => {
-  localStorage.removeItem(
-    "currentUser"
-  );
+  localStorage.removeItem("currentUser");
 };
 
 export const getCurrentUser = () => {
-  const user =
-    localStorage.getItem(
-      "currentUser"
-    );
+  const user = localStorage.getItem("currentUser");
 
-  return user
-    ? JSON.parse(user)
-    : null;
+  return user ? JSON.parse(user) : null;
 };
-

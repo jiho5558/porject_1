@@ -44,30 +44,30 @@ const ProductTable = ({ setSelectedProduct }) => {
       </thead>
 
       <tbody>
-        {products.map((item) => (
-          <tr key={item.id}>
-            <Td>{item.productName}</Td>
-            <Td>{item.color}</Td>
-            <Td>{item.costPrice}</Td>
-            <Td>{item.sellPrice}</Td>
-            <Td>{item.categoryCode}</Td>
+  {products.map((item) => (
+    <tr key={item.id}>
+      <Td>{item.product_name}</Td>
+      <Td>{item.color}</Td>
+      <Td>{item.cost_price}</Td>
+      <Td>{item.sale_price}</Td>
+      <Td>{item.category_code}</Td>
 
-            <Td>
-              <UpdateButton
-                onClick={() => setSelectedProduct(item)}
-              >
-                수정
-              </UpdateButton>
+      <Td>
+        <UpdateButton
+          onClick={() => setSelectedProduct(item)}
+        >
+          수정
+        </UpdateButton>
 
-              <DeleteButton
-                onClick={() => handleDelete(item.id)}
-              >
-                삭제
-              </DeleteButton>
-            </Td>
-          </tr>
-        ))}
-      </tbody>
+        <DeleteButton
+          onClick={() => handleDelete(item.id)}
+        >
+          삭제
+        </DeleteButton>
+      </Td>
+    </tr>
+  ))}
+</tbody>
     </Table>
   );
 };
@@ -77,34 +77,56 @@ export default ProductTable;
 const Table = styled.table`
   width: 100%;
   border-collapse: collapse;
+  background: #ffffff;
+  border-radius: 16px;
+  overflow: hidden;
 `;
 
 const Th = styled.th`
-  background: #e2e8f0;
-  padding: 12px;
-  border-bottom: 1px solid #cbd5e1;
+  background: #f7f7f8;
+  color: #565869;
+  font-weight: 600;
+  padding: 16px;
+  text-align: center;
+  border-bottom: 1px solid #ececf1;
 `;
 
 const Td = styled.td`
-  padding: 12px;
-  border-bottom: 1px solid #e2e8f0;
+  padding: 16px;
+  text-align: center;
+  color: #202123;
+  border-bottom: 1px solid #f1f1f3;
 `;
 
 const UpdateButton = styled.button`
-  border: none;
-  background: #10b981;
-  color: white;
-  padding: 8px 12px;
-  border-radius: 6px;
+  border: 1px solid #e5e7eb;
+  background: #f8fafc;
+  color: #374151;
+  padding: 8px 14px;
+  border-radius: 10px;
   cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s ease;
   margin-right: 8px;
+
+  &:hover {
+    background: #f1f5f9;
+    border-color: #cbd5e1;
+  }
 `;
 
 const DeleteButton = styled.button`
-  border: none;
-  background: #ef4444;
-  color: white;
-  padding: 8px 12px;
-  border-radius: 6px;
+  border: 1px solid #d1d5db;
+  background: #e5e7eb;
+  color: #374151;
+  padding: 8px 14px;
+  border-radius: 10px;
   cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: #d1d5db;
+    border-color: #9ca3af;
+  }
 `;
